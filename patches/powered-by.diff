@@ -1,0 +1,32 @@
+Take X-Powered-By and the root redirect from config
+
+app.js hard-codes `X-Powered-By: Iframely` on every response and a 302 from
+`/` to iframely.com, so a self-hosted instance names and links to the vendor's
+service.
+
+`POWERED_BY` and `HOME_URL` override both; config.local.js reads them from
+`IFRAMELY_POWERED_BY` and `IFRAMELY_HOME_URL`. Unset, the upstream values stay.
+
+Covered by `test/powered-by.test.js`.
+Index: b/lib/iframely/app.js
+===================================================================
+--- a/lib/iframely/app.js
++++ b/lib/iframely/app.js
+@@ -37,7 +37,7 @@ if (CONFIG.allowedOrigins) {
+ }
+ app.disable( 'x-powered-by' );
+ app.use(function(req, res, next) {
+-  res.setHeader('X-Powered-By', 'Iframely');
++  res.setHeader('X-Powered-By', CONFIG.POWERED_BY || 'Iframely');
+   next();
+ });
+ 
+@@ -193,7 +193,7 @@ if (process.env.NODE_ENV !== 'test') {
+ }
+ 
+ app.get('/', function(req, res) {
+-  res.writeHead(302, { Location: 'http://iframely.com'});
++  res.writeHead(302, { Location: CONFIG.HOME_URL || 'http://iframely.com'});
+   res.end();
+ });
+ 

@@ -1,0 +1,24 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: ['github>astrateam-net/renovate-config'],
+
+  // Moving the pin means restacking the series; a bot that only moves the
+  // pointer leaves the patch unapplied.
+  'git-submodules': {
+    enabled: false,
+  },
+
+  // .github/dependabot.yaml already owns these.
+  'github-actions': {
+    enabled: false,
+  },
+
+  packageRules: [
+    {
+      // Upstream dictates them: the Dockerfile's node stage and its pnpm install.
+      matchManagers: ['mise'],
+      matchDepNames: ['node', 'pnpm'],
+      enabled: false,
+    },
+  ],
+}

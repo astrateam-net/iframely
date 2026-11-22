@@ -1,0 +1,10 @@
+# Apply order for the iframely patch series (quilt `series` format).
+#
+# Order is DATA, not a filename convention — a patch's name says what capability
+# it adds, never where it sits. Reordering is an edit to this file and nothing
+# else; there is no such operation as "renumbering".
+#
+# `quilt push -a` applies these top to bottom onto the pinned lib/iframely submodule.
+ssrf-redirect-guard.diff
+cluster-workers-count.diff
+powered-by.diff

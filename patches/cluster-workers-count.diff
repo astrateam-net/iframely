@@ -1,0 +1,25 @@
+Fork CLUSTER_WORKERS_COUNT workers instead of one per host CPU
+
+cluster.js passes no `workersCount` to graceful-cluster, which then forks
+`os.cpus().length` workers: the CPU count of the host, not the container's CPU
+limit. On a large node one container starts dozens of Node processes, each
+holding its own plugin set and cache.
+
+`CLUSTER_WORKERS_COUNT` sets the count; config.local.js reads it from
+`IFRAMELY_WORKERS_COUNT` and defaults to 2. Unset, graceful-cluster keeps its
+own behaviour.
+
+Covered by `test/cluster-workers.test.js`, which boots cluster.js and counts
+the workers it forks.
+Index: b/lib/iframely/cluster.js
+===================================================================
+--- a/lib/iframely/cluster.js
++++ b/lib/iframely/cluster.js
+@@ -12,6 +12,7 @@ GracefulCluster.start({
+     disableGraceful: CONFIG.DEBUG,
+     restartOnTimeout: CONFIG.CLUSTER_WORKER_RESTART_ON_PERIOD,
+     restartOnMemory: CONFIG.CLUSTER_WORKER_RESTART_ON_MEMORY_USED,
++    workersCount: CONFIG.CLUSTER_WORKERS_COUNT,
+     serverFunction: function() {
+         import('./server.js');
+     }

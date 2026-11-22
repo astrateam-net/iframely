@@ -1,0 +1,3 @@
+[submodule "lib/iframely"]
+	path = lib/iframely
+	url = https://github.com/itteco/iframely

@@ -1,0 +1,43 @@
+---
+schemaVersion: "2.0.0"
+
+fileExistenceTests:
+  - name: env-driven config
+    path: /iframely/config.local.js
+    shouldExist: true
+
+commandTests:
+  - name: cluster forks IFRAMELY_WORKERS_COUNT workers
+    command: sh
+    args:
+      - -c
+      - >-
+        IFRAMELY_WORKERS_COUNT=3 IFRAMELY_WHITELIST_URL= node cluster.js > /tmp/boot.log 2>&1 &
+        sleep 10; grep -c 'Cluster: worker [0-9]* started' /tmp/boot.log
+    expectedOutput: ["^3\\s*$"]
+
+  - name: serves our X-Powered-By and root redirect
+    command: sh
+    args:
+      - -c
+      - >-
+        IFRAMELY_WORKERS_COUNT=1 IFRAMELY_WHITELIST_URL= node cluster.js > /tmp/boot.log 2>&1 &
+        sleep 8; node -e "fetch('http://127.0.0.1:8061/', { redirect: 'manual' }).then((r) =>
+        console.log(r.status, r.headers.get('x-powered-by'), r.headers.get('location')))"
+    expectedOutput: ["^302 Astra Team https://astrateam.net\\s*$"]
+
+  - name: refuses a private IP behind userinfo
+    command: sh
+    args:
+      - -c
+      - >-
+        IFRAMELY_WORKERS_COUNT=1 IFRAMELY_WHITELIST_URL= node cluster.js > /tmp/boot.log 2>&1 &
+        sleep 8; node -e "fetch('http://127.0.0.1:8061/iframely?url=http%3A%2F%2Fuser%40127.0.0.1%3A8061%2F').then((r) =>
+        console.log(r.status))"
+    expectedOutput: ["^4\\d\\d\\s*$"]
+
+metadataTest:
+  user: iframely
+  workdir: /iframely
+  exposedPorts: ["8061"]
+  entrypoint: ["/iframely/docker/entrypoint.sh"]
