@@ -30,6 +30,15 @@ Iframely v26.11.13
 
 ### Added
 
+- Miro boards embed from both the board link and the Embed tab's `live-embed` link, as Miro's
+  live-embed iframe with the viewport kept. The page is never fetched: it is robots `noindex`.
+
+## [26.11.13.0] - 2026-11-22
+
+Iframely v26.11.13
+
+### Added
+
 - Configuration from environment variables: cache engine and Redis or Memcached, worker count and
   restarts, allowlist source, base URL, CORS origins, locale and provider keys.
 - `IFRAMELY_WORKERS_COUNT`: the cluster forks a fixed number of workers, 2 by default, instead of
