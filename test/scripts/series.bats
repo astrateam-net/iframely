@@ -90,7 +90,10 @@ series_entries() {
       continue
     fi
     for f in $named; do
-      [ -f "$ROOT/lib/iframely/$f" ] || bad="$bad $p:$f(missing)"
+      # A backport may carry the upstream test it adds, absent from the pristine tree.
+      [ -f "$ROOT/lib/iframely/$f" ] \
+        || grep -qxF "+++ b/lib/iframely/$f" "$PATCHES/$p" \
+        || bad="$bad $p:$f(missing)"
     done
   done < <(series_entries)
   [ -z "$bad" ] || {
