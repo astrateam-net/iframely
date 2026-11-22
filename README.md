@@ -42,7 +42,7 @@ set by mounting a YAML file at `/iframely/config.local.yml`; it is applied after
 
 ## The provider allowlist
 
-Domain plugins (YouTube, Vimeo, X, Instagram, Google Maps and the rest under `plugins/domains/`)
+Domain plugins (YouTube, Vimeo, X, Instagram, Google Maps, Miro and the rest under `plugins/domains/`)
 always work. For every other site, oEmbed, Open Graph and Twitter Card players are returned only
 for domains on the allowlist; the rest get metadata and thumbnails. The list is fetched from
 Iframely every hour by default.

@@ -36,6 +36,18 @@ commandTests:
         console.log(r.status))"
     expectedOutput: ["^4\\d\\d\\s*$"]
 
+  - name: embeds a Miro live-embed URL without fetching it
+    command: sh
+    args:
+      - -c
+      - >-
+        IFRAMELY_WORKERS_COUNT=1 IFRAMELY_WHITELIST_URL= node cluster.js > /tmp/boot.log 2>&1 &
+        sleep 8; node -e "fetch('http://127.0.0.1:8061/iframely?url=' + encodeURIComponent(
+        'https://miro.com/app/live-embed/uXjVELUtCaE=/?embedMode=view_only_without_ui&moveToViewport=1,2,3,4'))
+        .then((r) => r.json()).then((b) => console.log(b.html.match(/src=\"([^\"]+)\"/)[1]))"
+    expectedOutput:
+      ["^https://miro.com/app/live-embed/uXjVELUtCaE=/\\?embedMode=view_only_without_ui&amp;moveToViewport=1%2C2%2C3%2C4\\s*$"]
+
 metadataTest:
   user: iframely
   workdir: /iframely
