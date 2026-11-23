@@ -2,7 +2,7 @@
 #MISE alias="build"
 #MISE description="Build the image of the assembled tree and run its structure tests"
 #MISE dir="{{config_root}}"
-#MISE depends=["up"]
+#MISE depends=["up", "whitelist"]
 #USAGE arg "[patch]" default="0" help="Our release slot: the N in 26.11.13.N"
 set -Eeuo pipefail
 

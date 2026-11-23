@@ -28,6 +28,15 @@ Iframely v99.9.9
 
 Iframely v26.11.13
 
+### Changed
+
+- The image carries Iframely's provider allowlist, downloaded when it is built, and no longer
+  fetches it at runtime. A deployment that could not reach iframely.com ran with an empty list.
+
+## [26.11.13.1] - 2026-11-22
+
+Iframely v26.11.13
+
 ### Added
 
 - Miro boards embed from both the board link and the Embed tab's `live-embed` link, as Miro's

@@ -117,6 +117,10 @@ jobs:
       - name: Assemble the Tree
         run: mise run up
 
+      # The image carries the list; a deployed instance never reaches iframely.com for it.
+      - name: Bake the Allowlist
+        run: mise run whitelist
+
       # Cache per arch in iframely's own package; push by digest only on release.
       - name: Get Bake Options
         id: target
