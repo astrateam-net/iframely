@@ -24,6 +24,7 @@ The order is always `quilt push -a` → `mise run overlay` → build or test; `m
 | Back to pristine upstream | `mise run down` |
 | Who owns a file | `mise run owner <path>` |
 | Copy the overlay into another tree | `mise run overlay --into <root>` |
+| Bake Iframely's allowlist into the tree | `mise run whitelist` — `WHITELIST_SOURCE=<url>` where iframely.com is unreachable |
 | Series integrity (10 checks) | `mise run test:series` |
 | Tests the series and overlay carry | `mise run test:unit` — needs `pnpm install --frozen-lockfile` in `lib/iframely` |
 | Lint every file type | `mise run lint` |

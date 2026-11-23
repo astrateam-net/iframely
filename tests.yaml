@@ -48,6 +48,16 @@ commandTests:
     expectedOutput:
       ["^https://miro.com/app/live-embed/uXjVELUtCaE=/\\?embedMode=view_only_without_ui&amp;moveToViewport=1%2C2%2C3%2C4\\s*$"]
 
+  - name: loads the baked allowlist and never fetches the URL
+    command: sh
+    args:
+      - -c
+      - >-
+        IFRAMELY_WORKERS_COUNT=1 node cluster.js > /tmp/boot.log 2>&1 &
+        sleep 8; grep -o 'Domains list activated. [0-9]* domains' /tmp/boot.log | head -1;
+        grep -c 'Loading domains list from' /tmp/boot.log || true
+    expectedOutput: ["^Domains list activated\\. [0-9]{4,} domains\\n0\\s*$"]
+
 metadataTest:
   user: iframely
   workdir: /iframely

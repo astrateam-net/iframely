@@ -28,7 +28,7 @@ Every variable is optional. Unset means upstream's default unless the table says
 | `IFRAMELY_CACHE_TTL` | `86400` | Seconds a response stays cached. |
 | `IFRAMELY_REDIS_URL` | — | `redis://[user:pass@]host:6379/db`, with `IFRAMELY_CACHE_ENGINE=redis`. |
 | `IFRAMELY_MEMCACHED_LOCATIONS` | — | `host:11211[,host:11211]`, with `IFRAMELY_CACHE_ENGINE=memcached`. |
-| `IFRAMELY_WHITELIST_URL` | Iframely's hosted list | Where the provider allowlist is fetched from, hourly. Empty disables the fetch. |
+| `IFRAMELY_WHITELIST_URL` | Iframely's hosted list | Fetched hourly only when `whitelist/` holds no list; the image ships one. Empty disables the fetch. |
 | `IFRAMELY_BASE_URL` | — | Public URL of this instance, used for `/r/` static files and hosted renders. |
 | `IFRAMELY_ALLOWED_ORIGINS` | — | Comma-separated origins allowed by CORS, for browsers that call the API directly. |
 | `IFRAMELY_LOCALE` | — | `en_US`-style locale sent as the first `Accept-Language`. |
@@ -44,12 +44,12 @@ set by mounting a YAML file at `/iframely/config.local.yml`; it is applied after
 
 Domain plugins (YouTube, Vimeo, X, Instagram, Google Maps, Miro and the rest under `plugins/domains/`)
 always work. For every other site, oEmbed, Open Graph and Twitter Card players are returned only
-for domains on the allowlist; the rest get metadata and thumbnails. The list is fetched from
-Iframely every hour by default.
+for domains on the allowlist; the rest get metadata and thumbnails.
 
-Without internet access to that list, set `IFRAMELY_WHITELIST_URL=` and mount a list as
-`/iframely/whitelist/iframely-<timestamp>.json`; the directory is watched and reloaded on change.
-The format is in upstream's `docs/QA Whitelist Format.md`.
+The image carries Iframely's list as of its build, at `/iframely/whitelist/iframely-<date>-UTC.json`,
+so it never fetches the list at runtime. A newer list mounted beside it as
+`iframely-YYYY-MM-DD-HH-MM-UTC.json` wins; the directory is watched and reloaded on change. The
+format is in upstream's `docs/QA Whitelist Format.md`.
 
 ## Network
 

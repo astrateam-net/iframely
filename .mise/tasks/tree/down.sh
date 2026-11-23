@@ -4,7 +4,8 @@
 #MISE dir="{{config_root}}"
 set -Eeuo pipefail
 
-# Both halves: the overlay's copies are untracked in the submodule, so a pop
-# leaves them behind.
+# The overlay's copies and the baked list are untracked in the submodule, so a
+# pop leaves them behind.
 quilt pop -a > /dev/null 2>&1 || true
 mise run overlay --clean
+mise run whitelist --clean
