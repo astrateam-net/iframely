@@ -10,7 +10,7 @@ lockfile = true
 [tools]
 bats = "1.14.0"
 container-structure-test = "1.22.1"
-hk = "2.13.0"
+hk = "2.14.0"
 jq = "1.8.2"
 # Upstream's toolchain: the Dockerfile's node stage and its pnpm install.
 node = "26.13.1"
